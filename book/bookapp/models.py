@@ -7,11 +7,7 @@ class Category(models.Model):
   name = models.CharField(max_length=255)
   slug = models.SlugField(max_length=255, unique=True)
   
-  class Meta:
-    verbose_name_plural='Categories'
-    
-  def __str__(self):
-    return self.name
+ 
 
 class Book(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
@@ -23,8 +19,6 @@ class Book(models.Model):
     is_archived = models.BooleanField(default=False)
     categories = models.ForeignKey(Category, related_name="categories", on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.title + ' |' + str(self.owner)
 
 
 class Comment(models.Model):
@@ -33,5 +27,3 @@ class Comment(models.Model):
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.owner
