@@ -20,7 +20,7 @@ class BookDetailView(RetrieveUpdateDestroyAPIView):
 
     serializer_class = BookSerializer
     permission_classes = (permissions.IsAuthenticated)
-    lookup_field = "id"
+    lookup_field = ["id", "categories"]
 
     def get_queryset(self):
         return Book.objects.filter(owner=self.request.user)
@@ -35,48 +35,13 @@ class BookListEvery(ListCreateAPIView):
 class BookDetailViewEvery(ListCreateAPIView):
 
     serializer_class = BookSerializer
-    lookup_field = "id"
+    lookup_field = ["id", "categories"]
 
     def get_queryset(self):
         return Book.objects.filter()
 
 
 
-class CategoryList(ListCreateAPIView):
-
-    serializer_class = CategorySerializer
-    permission_classes = (permissions.IsAuthenticated)
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
-
-    def get_queryset(self):
-        return Category.objects.filter(owner=self.request.user)
-
-class CategoryDetailView(RetrieveUpdateDestroyAPIView):
-
-    serializer_class = CategorySerializer
-    permission_classes = (permissions.IsAuthenticated)
-    lookup_field = "id"
-
-    def get_queryset(self):
-        return Category.objects.filter(owner=self.request.user)
-
-class CategoryListEvery(ListCreateAPIView):
-
-    serializer_class = CategorySerializer
-    
-
-    def get_queryset(self):
-        return Category.objects.filter()
-
-class CategoryDetailViewEvery(RetrieveUpdateDestroyAPIView):
-
-    serializer_class = BookSerializer
-    lookup_field = "id"
-
-    def get_queryset(self):
-        return Category.objects.filter()
 
 
 
