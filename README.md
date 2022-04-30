@@ -26,7 +26,8 @@ Note the (env) in front of the prompt. This indicates that this terminal session
 ```bash
 (env)$ python manage.py runserver
 ```
-Open your a tab on your browser and input this url ## http://127.0.0.1:8000/ it will open a swagger-ui
-contain the documentation for the all the endpoints
+Open your a tab on your browser and input this url 
+## http://127.0.0.1:8000/ 
+it will open a swagger-ui contain the documentation for the all the endpoints
 
 
