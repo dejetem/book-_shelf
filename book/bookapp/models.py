@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
 
@@ -18,6 +19,13 @@ class Book(models.Model):
     is_archived = models.BooleanField(default=False)
     categories = models.ForeignKey(Category, related_name="categories", on_delete=models.CASCADE)
 
+    def __str__(self):
+      return self.title + ' | ' + str(self.owner)
+
+    def get_absolute_url(self):
+        #return reverse('post-detail')
+      return reverse('home')
+
 
 
 class Comment(models.Model):
@@ -25,4 +33,17 @@ class Comment(models.Model):
     owner = models.ForeignKey(to=User, on_delete=models.CASCADE)
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f'Comment by {self.owner.username} on {self.post}'
+
+    def children(self):
+        return Comment.objects.filter(parent=self)
+
+    @property
+    def is_parent(self):
+        if self.parent is not None:
+            return False
+        return True
 
