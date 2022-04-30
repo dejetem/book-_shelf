@@ -13,7 +13,7 @@ class Book(models.Model):
     author = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     description = models.TextField()
-    book_cover = models.URLField(null=True)
+    book_cover = models.URLField()
     publication_date = models.DateField(auto_now_add=True)
     is_archived = models.BooleanField(default=False)
     categories = models.ForeignKey(Category, related_name="categories", on_delete=models.CASCADE)

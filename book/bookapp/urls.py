@@ -6,9 +6,9 @@ urlpatterns = [
     path('', BookListEvery.as_view()),
     path('user/book/<int:id>', BookDetailView.as_view()),
     path('user/', BookList.as_view()),
-    path('user/?categories:name', BookListCategory.as_view()),
+    path('user/?<categories>', BookListCategory.as_view()),
     path('book/<int:id>', BookDetailViewEvery.as_view()),
-    path('book/?categories:name', BookListEveryCategory.as_view()),
+    path('book/?<categories>', BookListEveryCategory.as_view()),
     path('user/book/<int:id>', CommentList.as_view()),
     path('book/<int:id>', CommentListEvery.as_view()),
 ]
