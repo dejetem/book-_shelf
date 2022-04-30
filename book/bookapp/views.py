@@ -8,7 +8,7 @@ from rest_framework import permissions
 class BookList(ListCreateAPIView):
 
     serializer_class = BookSerializer
-    permission_classes = (permissions.IsAuthenticated)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -16,14 +16,24 @@ class BookList(ListCreateAPIView):
     def get_queryset(self):
         return Book.objects.filter(owner=self.request.user)
 
-class BookDetailView(RetrieveUpdateDestroyAPIView):
+class BookListCategory(ListCreateAPIView):
 
     serializer_class = BookSerializer
-    permission_classes = (permissions.IsAuthenticated)
-    lookup_field = ["id", "categories"]
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = "categories"
 
     def get_queryset(self):
         return Book.objects.filter(owner=self.request.user)
+
+class BookDetailView(RetrieveUpdateDestroyAPIView):
+
+    serializer_class = BookSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_field = "id"
+
+    def get_queryset(self):
+        return Book.objects.filter(owner=self.request.user)
+
 
 class BookListEvery(ListCreateAPIView):
 
@@ -32,10 +42,18 @@ class BookListEvery(ListCreateAPIView):
     def get_queryset(self):
         return Book.objects.filter()
 
+class BookListEveryCategory(ListCreateAPIView):
+
+    serializer_class = BookSerializer
+    lookup_field = "categories"
+
+    def get_queryset(self):
+        return Book.objects.filter()
+
 class BookDetailViewEvery(ListCreateAPIView):
 
     serializer_class = BookSerializer
-    lookup_field = ["id", "categories"]
+    lookup_field = "id"
 
     def get_queryset(self):
         return Book.objects.filter()
@@ -49,7 +67,7 @@ class BookDetailViewEvery(ListCreateAPIView):
 class CommentList(ListCreateAPIView):
 
     serializer_class = CommentSerializer
-    permission_classes = (permissions.IsAuthenticated)
+    permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
         serializer.save()
