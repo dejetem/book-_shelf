@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import datetime
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -46,12 +47,19 @@ INSTALLED_APPS = [
     'bookauth',
     'drf_yasg',
     'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'bookauth.appjwt.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
 }
 
 SWAGGER_SETTINGS = {

@@ -2,10 +2,11 @@ from django.shortcuts import render
 from rest_framework.generics import GenericAPIView
 from .serializers import UserSerializer, LoginSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics, permissions
 from django.conf import settings
 from django.contrib import auth
 import jwt
+from rest_framework.views import APIView
 
 # Create your views here.
 class RegisterView(GenericAPIView):
@@ -38,6 +39,18 @@ class LoginView(GenericAPIView):
             data = {'user': serializer.data, 'token': auth_token}
 
             return Response(data, status=status.HTTP_200_OK)
+            
 
             # SEND RESPONSE
         return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class LogoutAPIView(APIView):
+    #serializer_class = LogoutSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def delete(request, *args, **kwargs):
+        request.user.auth_token.delete()
+        # django_logout(request)
+        request.user.auth_token.delete()
+        return Response(status=204)
