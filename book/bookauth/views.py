@@ -8,6 +8,7 @@ from django.contrib import auth
 import jwt
 from rest_framework.views import APIView
 
+
 # Create your views here.
 class RegisterView(GenericAPIView):
     serializer_class = UserSerializer
@@ -45,12 +46,18 @@ class LoginView(GenericAPIView):
         return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class LogoutAPIView(APIView):
+class LogoutAPIView(GenericAPIView):
     #serializer_class = LogoutSerializer
     permission_classes = (permissions.IsAuthenticated,)
-
-    def delete(request, *args, **kwargs):
+    authentication_classes = ()
+    """
+     def delete(request, *args, **kwargs):
         request.user.auth_token.delete()
         # django_logout(request)
         request.user.auth_token.delete()
         return Response(status=204)
+    """
+    def get(self, request, format=None):
+        
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)

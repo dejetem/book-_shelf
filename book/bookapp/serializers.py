@@ -1,21 +1,23 @@
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from .models import Book, Category, Comment
+from rest_framework import serializers
 
 
 
 class CategorySerializer(ModelSerializer):
-
+    owner = serializers.ReadOnlyField(source='owner.username')
+    books = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = Category
-        verbose_name_plural='Categories'
+        verbose_name_plural='categories'
 
-        fields = ['name', 'id', 'slug']
+        fields = ['name', 'id','owner', 'books']
     def __str__(self):
         return self.name
 
 
 class CommentSerializer(ModelSerializer):
-    owner = SerializerMethodField()
+    owner = serializers.ReadOnlyField(source='owner.username')
     class Meta:
         model = Comment
         ordering = '-id'
@@ -25,8 +27,10 @@ class CommentSerializer(ModelSerializer):
         return obj.owner.username
 
 class BookSerializer(ModelSerializer):
-    comments = CommentSerializer(source='comments.description')
-    owner = SerializerMethodField()
+    #comments = CommentSerializer(source='comments.description')
+    #owner = SerializerMethodField()
+    owner = serializers.ReadOnlyField(source='owner.username')
+    comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     book_cover = SerializerMethodField()
     
     class Meta:
